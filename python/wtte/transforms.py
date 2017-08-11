@@ -10,20 +10,26 @@ from .tte_util import get_is_not_censored
 from .tte_util import get_tte
 
 def get_padded_seq_lengths(padded):
-    """Returns the number of (seq_len) non-nan elements per sequence.
+    seq_lengths = []
 
-    :param padded: 2d or 3d tensor with dim 2 the time dimension
-    """
-    if len(padded.shape) == 2:
-        # (n_seqs,n_timesteps)
-        seq_lengths = np.count_nonzero(~np.isnan(padded), axis=1)
-    elif len(padded.shape) == 3:
-        # (n_seqs,n_timesteps,n_features,..)
-        seq_lengths = np.count_nonzero(~np.isnan(padded[:, :, 0]), axis=1)
-    else:
-        print('not yet implemented')
-        # TODO
+    for i in range(padded.shape[0]):
+        """Returns the number of (seq_len) non-nan elements per sequence.
 
+        :param padded: 2d or 3d tensor with dim 2 the time dimension
+        """
+        if len(padded.shape) == 2:
+            # (n_seqs,n_timesteps)
+            seq_lengths.append(np.count_nonzero(~np.isnan(padded[i]), axis=1))
+            # print(np.count_nonzero(~np.isnan(padded[i])))
+
+        elif len(padded.shape) == 3:
+            # (n_seqs,n_timesteps,n_features,..)
+            seq_lengths.append(np.count_nonzero(~np.isnan(padded[:, :, 0]), axis=1)) 
+        else:
+            print('not yet implemented')
+            # TODO
+
+    # print(seq_lengths)
     return seq_lengths
 
 def df_to_array(df, column_names, nanpad_right=True, return_lists=False,
