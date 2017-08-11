@@ -20,7 +20,6 @@ def get_padded_seq_lengths(padded):
         if len(padded.shape) == 2:
             # (n_seqs,n_timesteps)
             seq_lengths.append(np.count_nonzero(~np.isnan(padded[i]), axis=1))
-            # print(np.count_nonzero(~np.isnan(padded[i])))
 
         elif len(padded.shape) == 3:
             # (n_seqs,n_timesteps,n_features,..)
@@ -29,7 +28,6 @@ def get_padded_seq_lengths(padded):
             print('not yet implemented')
             # TODO
 
-    # print(seq_lengths)
     return seq_lengths
 
 def df_to_array(df, column_names, nanpad_right=True, return_lists=False,
